@@ -1,3 +1,5 @@
+My personal sandbox for this class. Likely litlle value to anyone else. -Rob
+
 # Getting started with pytest course
 
 Course materials and handouts for **[Getting started with pytest](https://talkpython.fm/pytest)** course.
