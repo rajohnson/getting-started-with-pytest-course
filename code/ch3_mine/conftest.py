@@ -1,19 +1,17 @@
 import pathlib
 import pytest
-from tempfile import TemporaryDirectory
 import cards
 
 
 @pytest.fixture(scope="session")
-def cards_db_working():
+def cards_db_working(tmp_path_factory):
     """
     Returns a connection to the cards db
     """
-    with TemporaryDirectory() as temp_dir:
-        db_path = pathlib.Path(temp_dir)
-        db = cards.CardsDB(db_path)
-        yield db
-        db.close()
+    db_path = tmp_path_factory.mktemp("db")
+    db = cards.CardsDB(db_path)
+    yield db
+    db.close()
 
 
 @pytest.fixture()
