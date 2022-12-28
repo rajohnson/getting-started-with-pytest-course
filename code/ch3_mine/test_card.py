@@ -4,7 +4,7 @@ from tempfile import TemporaryDirectory
 import cards
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def cards_db():
     with TemporaryDirectory() as temp_dir:
         db_path = pathlib.Path(temp_dir)
