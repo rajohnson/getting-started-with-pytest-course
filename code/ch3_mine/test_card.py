@@ -1,36 +1,34 @@
 import pathlib
+import pytest
 from tempfile import TemporaryDirectory
 import cards
 
 
-def test_count_empty():
+@pytest.fixture()
+def cards_db():
+    with TemporaryDirectory() as temp_dir:
+        db_path = pathlib.Path(temp_dir)
+        db = cards.CardsDB(db_path)
+        yield db
+        db.close()
+
+
+def test_count_empty(cards_db):
     # given - the database is empty
-    with TemporaryDirectory() as temp_dir:
-        db_path = pathlib.Path(temp_dir)
-        db = cards.CardsDB(db_path)
 
-        # when - count is called
-        count = db.count()
+    # when - count is called
+    count = cards_db.count()
 
-        # teardown
-        db.close()
-
-        # assert - count is  0
-        assert 0 == count
+    # assert - count is  0
+    assert 0 == count
 
 
-def test_count_one_item():
+def test_count_one_item(cards_db):
     # given - the database has one entry
-    with TemporaryDirectory() as temp_dir:
-        db_path = pathlib.Path(temp_dir)
-        db = cards.CardsDB(db_path)
-        db.add_card(cards.Card("task name"))
+    cards_db.add_card(cards.Card("task name"))
 
-        # when - count is called
-        count = db.count()
+    # when - count is called
+    count = cards_db.count()
 
-        # teardown
-        db.close()
-
-        # assert - count is  1
-        assert 1 == count
+    # assert - count is  1
+    assert 1 == count
