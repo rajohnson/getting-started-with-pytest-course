@@ -1,22 +1,4 @@
-import pathlib
-import pytest
-from tempfile import TemporaryDirectory
 import cards
-
-
-@pytest.fixture(scope="module")
-def cards_db_module():
-    with TemporaryDirectory() as temp_dir:
-        db_path = pathlib.Path(temp_dir)
-        db = cards.CardsDB(db_path)
-        yield db
-        db.close()
-
-
-@pytest.fixture()
-def cards_db(cards_db_module):
-    cards_db_module.delete_all()
-    return cards_db_module
 
 
 def test_count_empty(cards_db):
