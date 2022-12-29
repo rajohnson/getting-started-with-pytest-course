@@ -7,9 +7,13 @@ def initial_state(request):
     return request.param
 
 
-@pytest.mark.parametrize("summary", ["asdf", "qwer", "zxcv"])
-def test_finish(cards_db, initial_state, summary):
-    c = cards.Card(summary, state=initial_state)
+@pytest.fixture(params=["asdf", "qwer", "zxcv"])
+def initial_summary(request):
+    return request.param
+
+
+def test_finish(cards_db, initial_state, initial_summary):
+    c = cards.Card(initial_summary, state=initial_state)
     idx = cards_db.add_card(c)
     cards_db.finish(idx)
     card = cards_db.get_card(idx)
